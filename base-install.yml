@@ -29,9 +29,9 @@
           - sysstat
           - conntrack
           - file
-#          - apt-transport-https
+          - apt-transport-https
+          - bash-completion
 #          - arpwatch
-#          - bash-completion
 #          - bridge-utils
 #          - gawk
 #          - ipset
