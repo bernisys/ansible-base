@@ -6,8 +6,40 @@
     become_user: root
 
     tasks:
-
-      - name: Install midnight commander
-        ansible.builtin.package:
-          name: mc
+      - name: Install basic system utilities
+        package:
+          name: "{{ item }}"
           state: present
+        with_items:
+          - vim
+          - mc
+          - curl
+          - lsof
+          - lvm2
+          - moreutils
+          - anacron
+          - wget
+          - screen
+          - rsync
+          - sudo
+          - dnsutils
+          - htop
+          - net-tools
+          - sysfsutils
+          - sysstat
+          - conntrack
+          - file
+#          - apt-transport-https
+#          - arpwatch
+#          - bash-completion
+#          - bridge-utils
+#          - gawk
+#          - ipset
+#          - jq
+#          - libxml2-utils
+#          - netcat-openbsd
+#          - psmisc
+#          - python3-netaddr
+#          - software-properties-common
+#          - tmux
+
