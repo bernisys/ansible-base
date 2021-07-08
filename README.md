@@ -16,6 +16,8 @@ ansible-playbook -i localhost, base-install.yml
 # user creation and enablement
 ```bash
 useradd -m -s /bin/bash <username>
+
+# force the user to change the password on first login
 chage -p 0 <username>
 ```
 
