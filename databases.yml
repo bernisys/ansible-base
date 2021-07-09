@@ -1,0 +1,35 @@
+---
+  - name: deploy basic software packages
+    hosts: localhost
+    connection: local
+    become: true
+    become_user: root
+
+    tasks:
+      - name: Install DB server
+        package:
+          name: "{{ item }}"
+          state: present
+        with_items:
+          - python-pymysql
+          - python-pymysql-doc
+
+      - name: create default DB-users
+        mysql_user:
+          login_unix_socket: /var/run/mysqld/mysqld.sock
+          user: "dev_{{ item }}"
+          #priv: "dev_{{ item }}"
+          password: "{{ lookup('password', '/tmp/sqlpass_dev_{{ item }} chars=ascii_letters,digits,hexdigits,punctuation') }}"
+          state: present
+        with_items:
+          - [ 1, 2, 3, 4, 5 ]
+
+      - name: create default databases
+        mysql_db:
+          login_unix_socket: /var/run/mysqld/mysqld.sock
+          name: "dev_{{ item.0 }}_{{ item.1 }}"
+          state: present
+        with_nested:
+          - [ 1, 2, 3, 4, 5 ]
+          - [ 1, 2, 3, 4, 5 ]
+
