@@ -14,6 +14,15 @@
           - python-pymysql
           - python-pymysql-doc
 
+      - name: create default databases
+        mysql_db:
+          login_unix_socket: /var/run/mysqld/mysqld.sock
+          name: "dev_{{ item.0 }}_{{ item.1 }}"
+          state: present
+        with_nested:
+          - [ 1, 2, 3, 4, 5 ]
+          - [ 1, 2, 3, 4, 5 ]
+
       - name: create default DB-users
         mysql_user:
           login_unix_socket: /var/run/mysqld/mysqld.sock
@@ -24,11 +33,7 @@
         with_items:
           - [ 1, 2, 3, 4, 5 ]
 
-      - name: create default databases
-        mysql_db:
           login_unix_socket: /var/run/mysqld/mysqld.sock
-          name: "dev_{{ item.0 }}_{{ item.1 }}"
-          state: present
         with_nested:
           - [ 1, 2, 3, 4, 5 ]
           - [ 1, 2, 3, 4, 5 ]
