@@ -27,13 +27,17 @@
         mysql_user:
           login_unix_socket: /var/run/mysqld/mysqld.sock
           user: "dev_{{ item }}"
-          #priv: "dev_{{ item }}"
           password: "{{ lookup('password', '/tmp/sqlpass_dev_{{ item }} chars=ascii_letters,digits,hexdigits,punctuation') }}"
+          #password: "{{ lookup('file', '/tmp/sqlpass_dev_{{ item }}', encrypt='no') }}"
           state: present
         with_items:
           - [ 1, 2, 3, 4, 5 ]
 
+      - name: apply permissions to DBs for DB-users
+        mysql_user:
           login_unix_socket: /var/run/mysqld/mysqld.sock
+          user: "dev_{{ item.0 }}"
+          priv: "dev_{{ item.0 }}_{{ item.1 }}.*:ALL"
         with_nested:
           - [ 1, 2, 3, 4, 5 ]
           - [ 1, 2, 3, 4, 5 ]
