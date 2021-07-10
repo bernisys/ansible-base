@@ -41,4 +41,9 @@
         with_nested:
           - [ 1, 2, 3, 4, 5 ]
           - [ 1, 2, 3, 4, 5 ]
-
+        # doesn't work, workaround:
+        # mysql -e 'GRANT ALL ON `dev_1_%`.* to `dev_1`@`localhost`;' mysql
+        # mysql -e 'GRANT ALL ON `dev_2_%`.* to `dev_2`@`localhost`;' mysql
+        # mysql -e 'GRANT ALL ON `dev_3_%`.* to `dev_3`@`localhost`;' mysql
+        # mysql -e 'GRANT ALL ON `dev_4_%`.* to `dev_4`@`localhost`;' mysql
+        # mysql -e 'GRANT ALL ON `dev_5_%`.* to `dev_5`@`localhost`;' mysql
