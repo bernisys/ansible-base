@@ -1,0 +1,27 @@
+---
+  - name: deploy basic software packages
+    hosts: localhost
+    connection: local
+    become: true
+    become_user: root
+
+    tasks:
+
+      - name: Add production user
+        user:
+          system: no
+          createhome: yes
+          shell: /bin/bash
+          name: minecraft
+          home: /opt/minecraft/prod
+          password: "{{ lookup('password', '/tmp/userpass_prod chars=ascii_letters,digits,hexdigits length=40') }}"
+          #password: "{{ {{ lookup('password', '/tmp/userpass_prod chars=ascii_letters,digits,hexdigits length=40') }} | password_hash('sha512') }}"
+          state: present
+
+      - name: Create directory for the minecraft production system
+        file:
+          path: /opt/minecraft/prod
+          owner: minecraft
+          group: minecraft
+          mode: 0770
+          state: directory
