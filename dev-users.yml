@@ -1,0 +1,44 @@
+---
+  - name: deploy basic software packages
+    hosts: localhost
+    connection: local
+    become: true
+    become_user: root
+
+    tasks:
+
+      - name: Add development group
+        group:
+          name: developers
+          gid: 10000
+          system: no
+          state: present
+
+      - name: Add development users
+        user:
+          system: no
+          createhome: yes
+          shell: /bin/bash
+          groups: users, developers
+          name: "dev_{{ item }}"
+          home: "/opt/minecraft/dev_{{ item }}"
+          password: "{{ {{ lookup('password', '/tmp/userpass_dev_{{ item }} chars=ascii_letters,digits,hexdigits') }} | password_hash('sha512') }}"
+          state: present
+        with_items:
+          - [ 1, 2, 3, 4, 5 ]
+
+      - name: Create directory fro developers
+        file:
+          path: /opt/minecraft/developers
+          owner: root
+          group: developers
+          mode: 0770
+          state: directory
+
+      - name: Create directory for the minecraft production system
+        file:
+          path: /opt/minecraft/prod
+          owner: minecraft
+          group: minecraft
+          mode: 0770
+          state: directory
